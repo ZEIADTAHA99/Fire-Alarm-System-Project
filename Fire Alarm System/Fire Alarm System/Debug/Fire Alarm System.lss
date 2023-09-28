@@ -1,0 +1,446 @@
+
+Fire Alarm System.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000022c  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000020  00800060  0000022c  000002a0  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000002c0  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000002f0  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 000000a8  00000000  00000000  0000032c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000d46  00000000  00000000  000003d4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000835  00000000  00000000  0000111a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000069a  00000000  00000000  0000194f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000144  00000000  00000000  00001fec  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000410  00000000  00000000  00002130  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    000004d7  00000000  00000000  00002540  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000078  00000000  00000000  00002a17  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   8:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  10:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  14:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  18:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  1c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  20:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  24:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  28:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  2c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  30:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  34:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  38:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  3c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  40:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  44:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  48:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  4c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  50:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	ec e2       	ldi	r30, 0x2C	; 44
+  68:	f2 e0       	ldi	r31, 0x02	; 2
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+  70:	a0 38       	cpi	r26, 0x80	; 128
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <__do_copy_data+0xc>
+  76:	0e 94 a2 00 	call	0x144	; 0x144 <main>
+  7a:	0c 94 14 01 	jmp	0x228	; 0x228 <_exit>
+
+0000007e <__bad_interrupt>:
+  7e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000082 <LCD_send_command>:
+
+#include "LCD.h"
+
+void LCD_send_command(unsigned char cmd)
+{
+	LCD_Data_Port = cmd;   //command
+  82:	85 bb       	out	0x15, r24	; 21
+	// mesh active till enable opend
+	
+	clearbit(LCD_Control_Port,RS);  // rs = 0
+  84:	82 b3       	in	r24, 0x12	; 18
+  86:	8f 7e       	andi	r24, 0xEF	; 239
+  88:	82 bb       	out	0x12, r24	; 18
+	clearbit(LCD_Control_Port,RW);  // rw = 0  write
+  8a:	82 b3       	in	r24, 0x12	; 18
+  8c:	8b 7f       	andi	r24, 0xFB	; 251
+  8e:	82 bb       	out	0x12, r24	; 18
+	setbit(LCD_Control_Port,EN);    // EN = 1
+  90:	82 b3       	in	r24, 0x12	; 18
+  92:	88 60       	ori	r24, 0x08	; 8
+  94:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  96:	00 00       	nop
+	_delay_us(1);					// micro second
+	clearbit(LCD_Control_Port,EN);  // EN = 0
+  98:	82 b3       	in	r24, 0x12	; 18
+  9a:	87 7f       	andi	r24, 0xF7	; 247
+  9c:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  9e:	8d ee       	ldi	r24, 0xED	; 237
+  a0:	92 e0       	ldi	r25, 0x02	; 2
+  a2:	01 97       	sbiw	r24, 0x01	; 1
+  a4:	f1 f7       	brne	.-4      	; 0xa2 <LCD_send_command+0x20>
+  a6:	00 c0       	rjmp	.+0      	; 0xa8 <LCD_send_command+0x26>
+  a8:	00 00       	nop
+  aa:	08 95       	ret
+
+000000ac <LCD_send_data>:
+	_delay_ms(3);                   //milli  lcd command <+> command
+}
+
+void LCD_send_data(unsigned char data)
+{
+	LCD_Data_Port = data ;  // port == data
+  ac:	85 bb       	out	0x15, r24	; 21
+	
+	setbit(LCD_Control_Port,RS);    // RS = 1 --> lcd command--> 0 data-->1
+  ae:	82 b3       	in	r24, 0x12	; 18
+  b0:	80 61       	ori	r24, 0x10	; 16
+  b2:	82 bb       	out	0x12, r24	; 18
+	clearbit(LCD_Control_Port,RW);	// write ==> 0
+  b4:	82 b3       	in	r24, 0x12	; 18
+  b6:	8b 7f       	andi	r24, 0xFB	; 251
+  b8:	82 bb       	out	0x12, r24	; 18
+	setbit(LCD_Control_Port,EN);	//EN = 1
+  ba:	82 b3       	in	r24, 0x12	; 18
+  bc:	88 60       	ori	r24, 0x08	; 8
+  be:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  c0:	00 00       	nop
+	_delay_us(1);					// delay 1 us
+	clearbit(LCD_Control_Port,EN);  // en =0
+  c2:	82 b3       	in	r24, 0x12	; 18
+  c4:	87 7f       	andi	r24, 0xF7	; 247
+  c6:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  c8:	89 ef       	ldi	r24, 0xF9	; 249
+  ca:	90 e0       	ldi	r25, 0x00	; 0
+  cc:	01 97       	sbiw	r24, 0x01	; 1
+  ce:	f1 f7       	brne	.-4      	; 0xcc <LCD_send_data+0x20>
+  d0:	00 c0       	rjmp	.+0      	; 0xd2 <LCD_send_data+0x26>
+  d2:	00 00       	nop
+  d4:	08 95       	ret
+
+000000d6 <LCD_INIT>:
+	_delay_ms(1);					// lcd to separate from two data sending operations
+}
+void LCD_INIT(void)
+{
+	LCD_Data_Dir =0xff;		//all output DDRC = 255 or 0xff
+  d6:	8f ef       	ldi	r24, 0xFF	; 255
+  d8:	84 bb       	out	0x14, r24	; 20
+	
+	setbit(LCD_Control_Dir,EN);  // EN pin output
+  da:	81 b3       	in	r24, 0x11	; 17
+  dc:	88 60       	ori	r24, 0x08	; 8
+  de:	81 bb       	out	0x11, r24	; 17
+	setbit(LCD_Control_Dir,RS);	 // RS pin out
+  e0:	81 b3       	in	r24, 0x11	; 17
+  e2:	80 61       	ori	r24, 0x10	; 16
+  e4:	81 bb       	out	0x11, r24	; 17
+	setbit(LCD_Control_Dir,RW);	 // RW output
+  e6:	81 b3       	in	r24, 0x11	; 17
+  e8:	84 60       	ori	r24, 0x04	; 4
+  ea:	81 bb       	out	0x11, r24	; 17
+  ec:	87 e8       	ldi	r24, 0x87	; 135
+  ee:	93 e1       	ldi	r25, 0x13	; 19
+  f0:	01 97       	sbiw	r24, 0x01	; 1
+  f2:	f1 f7       	brne	.-4      	; 0xf0 <LCD_INIT+0x1a>
+  f4:	00 c0       	rjmp	.+0      	; 0xf6 <LCD_INIT+0x20>
+  f6:	00 00       	nop
+	_delay_ms(20);				// to make sure power is on for lcd 4.5v
+	// > 15 ms
+	LCD_send_command(0x38);		// LCD in 8 bit mode and 2 lines  5*8 dots
+  f8:	88 e3       	ldi	r24, 0x38	; 56
+  fa:	0e 94 41 00 	call	0x82	; 0x82 <LCD_send_command>
+	LCD_send_command(0x0C);		// LCD DISPLY ON CURSER OFF
+  fe:	8c e0       	ldi	r24, 0x0C	; 12
+ 100:	0e 94 41 00 	call	0x82	; 0x82 <LCD_send_command>
+	LCD_send_command(0x06);		// LCD AUTO INCRMENT
+ 104:	86 e0       	ldi	r24, 0x06	; 6
+ 106:	0e 94 41 00 	call	0x82	; 0x82 <LCD_send_command>
+	LCD_send_command(0X01);		// LCD CLEAR SCREAN 00000001
+ 10a:	81 e0       	ldi	r24, 0x01	; 1
+ 10c:	0e 94 41 00 	call	0x82	; 0x82 <LCD_send_command>
+	// make sure there is nothing on lcd
+	
+	LCD_send_command(0X80);		// HOME POSITION
+ 110:	80 e8       	ldi	r24, 0x80	; 128
+ 112:	0e 94 41 00 	call	0x82	; 0x82 <LCD_send_command>
+ 116:	08 95       	ret
+
+00000118 <LCD_send_string>:
+	
+}
+
+void LCD_send_string( char str[])
+{
+ 118:	0f 93       	push	r16
+ 11a:	1f 93       	push	r17
+ 11c:	cf 93       	push	r28
+ 11e:	df 93       	push	r29
+ 120:	8c 01       	movw	r16, r24
+	
+	int count =0;
+ 122:	c0 e0       	ldi	r28, 0x00	; 0
+ 124:	d0 e0       	ldi	r29, 0x00	; 0
+	
+	while(str[count]!=0)
+ 126:	03 c0       	rjmp	.+6      	; 0x12e <LCD_send_string+0x16>
+	{
+		LCD_send_data(str[count]);
+ 128:	0e 94 56 00 	call	0xac	; 0xac <LCD_send_data>
+		count++;
+ 12c:	21 96       	adiw	r28, 0x01	; 1
+void LCD_send_string( char str[])
+{
+	
+	int count =0;
+	
+	while(str[count]!=0)
+ 12e:	f8 01       	movw	r30, r16
+ 130:	ec 0f       	add	r30, r28
+ 132:	fd 1f       	adc	r31, r29
+ 134:	80 81       	ld	r24, Z
+ 136:	81 11       	cpse	r24, r1
+ 138:	f7 cf       	rjmp	.-18     	; 0x128 <LCD_send_string+0x10>
+	{
+		LCD_send_data(str[count]);
+		count++;
+	}
+}
+ 13a:	df 91       	pop	r29
+ 13c:	cf 91       	pop	r28
+ 13e:	1f 91       	pop	r17
+ 140:	0f 91       	pop	r16
+ 142:	08 95       	ret
+
+00000144 <main>:
+
+
+int main(void)
+{
+	 
+	 clearbit(DDRB,0); // Input Direction for Flame Sensor Pin (Port B,0)
+ 144:	87 b3       	in	r24, 0x17	; 23
+ 146:	8e 7f       	andi	r24, 0xFE	; 254
+ 148:	87 bb       	out	0x17, r24	; 23
+	 
+	 UART_INIT(103);  // init baud = 9600
+ 14a:	87 e6       	ldi	r24, 0x67	; 103
+ 14c:	90 e0       	ldi	r25, 0x00	; 0
+ 14e:	0e 94 05 01 	call	0x20a	; 0x20a <UART_INIT>
+	 LCD_INIT();
+ 152:	0e 94 6b 00 	call	0xd6	; 0xd6 <LCD_INIT>
+	 
+	 LCD_send_command(0X01);	
+ 156:	81 e0       	ldi	r24, 0x01	; 1
+ 158:	0e 94 41 00 	call	0x82	; 0x82 <LCD_send_command>
+	 
+    while (1) 
+    {
+		
+		// Use LCD in 2 line in 8-bit Mode:
+		LCD_send_command(0x38);
+ 15c:	88 e3       	ldi	r24, 0x38	; 56
+ 15e:	0e 94 41 00 	call	0x82	; 0x82 <LCD_send_command>
+		
+		int Flame_Sensor = readbit(PINB,0) ;
+ 162:	86 b3       	in	r24, 0x16	; 22
+		
+		if (Flame_Sensor == 1)
+ 164:	28 2f       	mov	r18, r24
+ 166:	21 70       	andi	r18, 0x01	; 1
+ 168:	c2 2f       	mov	r28, r18
+ 16a:	90 e0       	ldi	r25, 0x00	; 0
+ 16c:	d9 2f       	mov	r29, r25
+ 16e:	80 ff       	sbrs	r24, 0
+ 170:	25 c0       	rjmp	.+74     	; 0x1bc <main+0x78>
+		{
+			
+			UART_sendchar('f'); // Send Notification to the Second Bluetooth (Second Micro-controller, To control DC Motor and Set the Alarm LED)
+ 172:	86 e6       	ldi	r24, 0x66	; 102
+ 174:	0e 94 0e 01 	call	0x21c	; 0x21c <UART_sendchar>
+			
+			LCD_send_string (" Notification:");// displaying name
+ 178:	80 e6       	ldi	r24, 0x60	; 96
+ 17a:	90 e0       	ldi	r25, 0x00	; 0
+ 17c:	0e 94 8c 00 	call	0x118	; 0x118 <LCD_send_string>
+			LCD_send_command(0x80 + 0x40 + 0);// shifting cursor  to 1st  shell  of second line
+ 180:	80 ec       	ldi	r24, 0xC0	; 192
+ 182:	0e 94 41 00 	call	0x82	; 0x82 <LCD_send_command>
+ 186:	8f e3       	ldi	r24, 0x3F	; 63
+ 188:	9c e9       	ldi	r25, 0x9C	; 156
+ 18a:	01 97       	sbiw	r24, 0x01	; 1
+ 18c:	f1 f7       	brne	.-4      	; 0x18a <main+0x46>
+ 18e:	00 c0       	rjmp	.+0      	; 0x190 <main+0x4c>
+ 190:	00 00       	nop
+			_delay_ms(10);
+			LCD_send_string("Fire");
+ 192:	8f e6       	ldi	r24, 0x6F	; 111
+ 194:	90 e0       	ldi	r25, 0x00	; 0
+ 196:	0e 94 8c 00 	call	0x118	; 0x118 <LCD_send_string>
+			LCD_send_string(" ");
+ 19a:	84 e7       	ldi	r24, 0x74	; 116
+ 19c:	90 e0       	ldi	r25, 0x00	; 0
+ 19e:	0e 94 8c 00 	call	0x118	; 0x118 <LCD_send_string>
+ 1a2:	9f ef       	ldi	r25, 0xFF	; 255
+ 1a4:	2d ee       	ldi	r18, 0xED	; 237
+ 1a6:	82 e0       	ldi	r24, 0x02	; 2
+ 1a8:	91 50       	subi	r25, 0x01	; 1
+ 1aa:	20 40       	sbci	r18, 0x00	; 0
+ 1ac:	80 40       	sbci	r24, 0x00	; 0
+ 1ae:	e1 f7       	brne	.-8      	; 0x1a8 <main+0x64>
+ 1b0:	00 c0       	rjmp	.+0      	; 0x1b2 <main+0x6e>
+ 1b2:	00 00       	nop
+			_delay_ms(60);
+			LCD_send_command(0x01);
+ 1b4:	81 e0       	ldi	r24, 0x01	; 1
+ 1b6:	0e 94 41 00 	call	0x82	; 0x82 <LCD_send_command>
+ 1ba:	d0 cf       	rjmp	.-96     	; 0x15c <main+0x18>
+			
+			
+		}
+		
+		else if (Flame_Sensor == 0)
+ 1bc:	cd 2b       	or	r28, r29
+ 1be:	71 f6       	brne	.-100    	; 0x15c <main+0x18>
+		{
+			UART_sendchar('n'); //Send Notification to the Second Bluetooth (Second Micro-controller, That All Save , Stop Motor and LED the Green LED)
+ 1c0:	8e e6       	ldi	r24, 0x6E	; 110
+ 1c2:	0e 94 0e 01 	call	0x21c	; 0x21c <UART_sendchar>
+			
+			LCD_send_string (" Notification:");// displaying name
+ 1c6:	80 e6       	ldi	r24, 0x60	; 96
+ 1c8:	90 e0       	ldi	r25, 0x00	; 0
+ 1ca:	0e 94 8c 00 	call	0x118	; 0x118 <LCD_send_string>
+			LCD_send_command(0x80 + 0x40 + 0);// shifting cursor  to 1st  shell  of second line
+ 1ce:	80 ec       	ldi	r24, 0xC0	; 192
+ 1d0:	0e 94 41 00 	call	0x82	; 0x82 <LCD_send_command>
+ 1d4:	8f e3       	ldi	r24, 0x3F	; 63
+ 1d6:	9c e9       	ldi	r25, 0x9C	; 156
+ 1d8:	01 97       	sbiw	r24, 0x01	; 1
+ 1da:	f1 f7       	brne	.-4      	; 0x1d8 <main+0x94>
+ 1dc:	00 c0       	rjmp	.+0      	; 0x1de <main+0x9a>
+ 1de:	00 00       	nop
+			_delay_ms(10);
+			LCD_send_string("All Save");
+ 1e0:	86 e7       	ldi	r24, 0x76	; 118
+ 1e2:	90 e0       	ldi	r25, 0x00	; 0
+ 1e4:	0e 94 8c 00 	call	0x118	; 0x118 <LCD_send_string>
+			LCD_send_string(" ");
+ 1e8:	84 e7       	ldi	r24, 0x74	; 116
+ 1ea:	90 e0       	ldi	r25, 0x00	; 0
+ 1ec:	0e 94 8c 00 	call	0x118	; 0x118 <LCD_send_string>
+ 1f0:	9f ef       	ldi	r25, 0xFF	; 255
+ 1f2:	2d ee       	ldi	r18, 0xED	; 237
+ 1f4:	82 e0       	ldi	r24, 0x02	; 2
+ 1f6:	91 50       	subi	r25, 0x01	; 1
+ 1f8:	20 40       	sbci	r18, 0x00	; 0
+ 1fa:	80 40       	sbci	r24, 0x00	; 0
+ 1fc:	e1 f7       	brne	.-8      	; 0x1f6 <main+0xb2>
+ 1fe:	00 c0       	rjmp	.+0      	; 0x200 <main+0xbc>
+ 200:	00 00       	nop
+			_delay_ms(60);
+			LCD_send_command(0x01);
+ 202:	81 e0       	ldi	r24, 0x01	; 1
+ 204:	0e 94 41 00 	call	0x82	; 0x82 <LCD_send_command>
+ 208:	a9 cf       	rjmp	.-174    	; 0x15c <main+0x18>
+
+0000020a <UART_INIT>:
+#include "UART.h"
+
+void UART_INIT(unsigned int baud)
+{
+	// 8 bit data 1 stop bit
+	UCSRB |= (1 << RXEN) | (1 << TXEN);	// Enable UART transmitter and receiver
+ 20a:	2a b1       	in	r18, 0x0a	; 10
+ 20c:	28 61       	ori	r18, 0x18	; 24
+ 20e:	2a b9       	out	0x0a, r18	; 10
+	UCSRC |= (1 << URSEL)| (1 << UCSZ0) | (1 << UCSZ1);	//8 bit data and 1 stop bit
+ 210:	20 b5       	in	r18, 0x20	; 32
+ 212:	26 68       	ori	r18, 0x86	; 134
+ 214:	20 bd       	out	0x20, r18	; 32
+	UBRRL = baud;//lower
+ 216:	89 b9       	out	0x09, r24	; 9
+	UBRRH = (baud >> 8);//higher
+ 218:	90 bd       	out	0x20, r25	; 32
+ 21a:	08 95       	ret
+
+0000021c <UART_sendchar>:
+
+void UART_sendchar(unsigned char data)
+{   // 1-check empty or not
+	// 2-udr data register for send or recive
+	// 3-check data send
+	while(readbit(UCSRA,UDRE)==0)// wait the reg to be empty
+ 21c:	5d 9b       	sbis	0x0b, 5	; 11
+ 21e:	fe cf       	rjmp	.-4      	; 0x21c <UART_sendchar>
+	{		}
+	UDR = data; // send  data
+ 220:	8c b9       	out	0x0c, r24	; 12
+	while(readbit(UCSRA,TXC)==0)// wait till the data to be send
+ 222:	5e 9b       	sbis	0x0b, 6	; 11
+ 224:	fe cf       	rjmp	.-4      	; 0x222 <UART_sendchar+0x6>
+	{		}
+}
+ 226:	08 95       	ret
+
+00000228 <_exit>:
+ 228:	f8 94       	cli
+
+0000022a <__stop_program>:
+ 22a:	ff cf       	rjmp	.-2      	; 0x22a <__stop_program>
